@@ -1,0 +1,3 @@
+CHANGED,/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/instantRun/debug/folders/1/5/main/com/diegollams/beaconlearning/MainActivityFragment$2.class
+CHANGED,/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/instantRun/debug/folders/1/5/main/com/diegollams/beaconlearning/MainActivityFragment$1.class
+CHANGED,/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/instantRun/debug/folders/1/5/main/com/diegollams/beaconlearning/MainActivityFragment.class
