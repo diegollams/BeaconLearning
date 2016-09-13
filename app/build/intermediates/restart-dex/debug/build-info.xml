@@ -4,54 +4,45 @@
     api-level="23"
     density="xxhdpi"
     format="7"
-    timestamp="156349554105422"
-    token="-7094426311981348598"
-    verifier="COMPATIBLE" >
+    timestamp="24871196395198"
+    token="-7094426311981348598" >
 
     <task
         name="javac"
-        duration="207" />
+        duration="0" />
     <task
         name="instant-run-dex"
-        duration="819" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="144" />
+        duration="0" />
     <task
         name="verifier"
-        duration="3" />
+        duration="0" />
 
     <artifact
-        location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/reload-dex/debug/classes.dex"
-        type="RELOAD_DEX" />
+        location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/res/resources-debug.ap_"
+        type="RESOURCES" />
 
-    <build timestamp="155327732194513" >
+    <build timestamp="22597255794414" >
         <artifact
             location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/outputs/apk/app-debug.apk"
             type="MAIN" />
     </build>
-    <build timestamp="155844252310678" >
-        <artifact
-            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/res/resources-debug.ap_"
-            type="RESOURCES" />
-        <artifact
-            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex"
-            type="DEX" />
+    <build timestamp="22762480734007" >
         <artifact
             location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_7/classes.dex"
             type="DEX" />
     </build>
-    <build timestamp="156324735140036" >
+    <build timestamp="24792748578723" >
         <artifact
-            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
+            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_1/classes.dex"
             type="DEX" />
     </build>
-    <build
-        timestamp="156349554105422"
-        verifier="COMPATIBLE" >
+    <build timestamp="24871196395198" >
         <artifact
-            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/reload-dex/debug/classes.dex"
-            type="RELOAD_DEX" />
+            location="/Users/diegollams/AndroidStudioProjects/BeaconLearning/app/build/intermediates/res/resources-debug.ap_"
+            type="RESOURCES" />
     </build>
 
 </instant-run>

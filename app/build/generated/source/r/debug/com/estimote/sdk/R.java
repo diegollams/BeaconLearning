@@ -19,6 +19,6 @@ public final class R {
 		public static final int requesting_location_permission_rationale = 0x7f060021;
 	}
 	public static final class style {
-		public static final int Theme_Transparent = 0x7f090107;
+		public static final int Theme_Transparent = 0x7f09010b;
 	}
 }

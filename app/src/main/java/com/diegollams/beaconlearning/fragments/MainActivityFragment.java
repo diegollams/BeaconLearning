@@ -1,4 +1,4 @@
-package com.diegollams.beaconlearning;
+package com.diegollams.beaconlearning.fragments;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -6,13 +6,22 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.diegollams.beaconlearning.R;
+import com.diegollams.beaconlearning.activities.MainActivity;
+import com.diegollams.beaconlearning.adapters.BeaconsAdapter;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
@@ -27,11 +36,13 @@ import java.util.UUID;
  */
 public class MainActivityFragment extends Fragment {
 
-    private TextView textView;
-    private TextView textView2;
+    private RecyclerView beaconRecyclerView;
+    private BeaconsAdapter beaconsAdapter;
+    private FloatingActionButton stopButton;
 
     private BeaconManager beaconManager;
-    private Region region;
+    private static final Region region = new Region("monitoring", UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
+    private boolean isRanging;
 
     public MainActivityFragment() {
     }
@@ -40,16 +51,33 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        textView = (TextView) view.findViewById(R.id.textview);
-        textView2 = (TextView) view.findViewById(R.id.textView2);
+        initComponents(view);
+
         return view;
+    }
+
+    private void initBeaconRecycle(View view) {
+        beaconRecyclerView = (RecyclerView) view.findViewById(R.id.beacon_recycle_view);
+        beaconsAdapter = new BeaconsAdapter();
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        beaconRecyclerView.setLayoutManager(mLayoutManager);
+        beaconRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        beaconRecyclerView.setAdapter(beaconsAdapter);
+    }
+
+    private void initComponents(View view) {
+        stopButton = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        if(stopButton != null){
+            //TODO this should't be null
+            stopButton.setOnClickListener(stopButtonListener);
+        }
+        initBeaconRecycle(view);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        beaconManager.stopMonitoring(region);
-        beaconManager.disconnect();
+        stopRanging();
     }
 
     @Override
@@ -63,20 +91,12 @@ public class MainActivityFragment extends Fragment {
         super.onResume();
         SystemRequirementsChecker.checkWithDefaultDialogs(getActivity());
         beaconManager = new BeaconManager(getContext());
-        defineRegion();
-        beaconManager.setMonitoringListener(monitoringListener);
+        beaconManager.setRangingListener(rangingListener);
         beaconManager.connect(onConnectBeaconCallback);
     }
 
     //class methods
 
-    private void defineRegion(){
-        region = new Region(
-                "monitoring"
-                , UUID.fromString("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
-                , 24209, 65369
-        );
-    }
 
     private void showNotification(String title, String message, int id){
         Intent showNotification = new Intent(getContext(), MainActivity.class);
@@ -95,33 +115,43 @@ public class MainActivityFragment extends Fragment {
         notificationManager.notify(id, notification);
     }
 
+    private void startRanging(){
+        isRanging = true;
+        beaconManager.startRanging(region);
+    }
+
+    private void stopRanging(){
+        isRanging = false;
+        beaconManager.stopRanging(region);
+    }
+
 
     //Listeners
-    BeaconManager.MonitoringListener monitoringListener  = new BeaconManager.MonitoringListener() {
+    private View.OnClickListener stopButtonListener = new View.OnClickListener() {
         @Override
-        public void onEnteredRegion(Region region, List<Beacon> list) {
-            String message ="list : " +list.size()  + "ident " + region.getIdentifier() + "major " + region.getMajor() + " " + region.getProximityUUID();
-            showNotification("Beacon", "Enter Region", 1);
-            textView.setText(message);
-            textView2.setText(message);
+        public void onClick(View v) {
+            if(isRanging){
+                stopRanging();
+            }else{
+                startRanging();
+            }
+            Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
+    };
 
+    private BeaconManager.RangingListener rangingListener = new BeaconManager.RangingListener() {
         @Override
-        public void onExitedRegion(Region region) {
-            String message = "ident " + region.getIdentifier() + " major " + region.getMajor() + " " + region.getProximityUUID();
-            showNotification("Beacon", "Exit region", 1);
-            textView.setText(message);
-
+        public void onBeaconsDiscovered(Region region, List<Beacon> list) {
+            beaconsAdapter.setBeaconList(list);
         }
     };
 
 
-    BeaconManager.ServiceReadyCallback onConnectBeaconCallback = new BeaconManager.ServiceReadyCallback() {
+    private BeaconManager.ServiceReadyCallback onConnectBeaconCallback = new BeaconManager.ServiceReadyCallback() {
         @Override
         public void onServiceReady() {
-            textView.setText("ready");
-            showNotification("~Beacon", "Ready", 2);
-            beaconManager.startMonitoring(region);
+        startRanging();
         }
     };
 }
